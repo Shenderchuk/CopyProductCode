@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include Configuration.wxi?>
+	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.ProductManufacter)" UpgradeCode="$(var.ProductUpgradeCode)">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"  Platform="x86"/>
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes" />
+		<MediaTemplate  EmbedCab="yes"/>
+
+    <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)\_src\CPC.ico"/>
+    
+    <!--LAUNCH CONDITIONS TABLE-->
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED"/>
+    <Condition Message="This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED]]>
+    </Condition>
+
+    <!-- PROPERTIES -->  
+    <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
+    
+    <!-- UI PART-->
+    <UIRef Id="WixUI_Minimal"/>
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)\_src\licenseagreement.rtf" />
+    
+    <!-- FEATURE, COMPONENS AND FILE PARTS-->
+    <Feature Id="CopyProductCode" Title="CopyProductCode" Level="1">
+			<ComponentGroupRef Id="MainComponents" />
+		</Feature>
+    
+      <Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+			</Directory>
+		</Directory>
+  
+    <ComponentGroup Id="MainComponents" Directory="INSTALLFOLDER">
+			<Component Id="cmp_CopyProductCode.exe"> 
+			  <File Id="fil_CopyProductCode.exe" Source="$(var.CopyProductCode.TargetPath)" KeyPath="yes"/>
+        <RegistryValue  Root="HKLM" Key="Software\classes\MSI.Package\shell\zCopy_ProductCode_to_Clipboard" Value="Copy ProductCode to Clipboard" Type="string"/>
+        <RegistryValue  Root="HKLM" Key="Software\classes\MSI.Package\shell\zCopy_ProductCode_to_Clipboard\command" Value='"[#fil_CopyProductCode.exe]" "%1"' Type="string"/>
+        <RegistryValue  Root="HKLM" Key="SOFTWARE\Classes\.msi\shell\Copy PackageCode to Clipboard\command" Value='"[#fil_CopyProductCode.exe]" "%1"' Type="string"/>
+      </Component>
+		</ComponentGroup>
+  
+  </Product>
+</Wix>
