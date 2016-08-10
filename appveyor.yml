@@ -16,7 +16,7 @@ skip_commits:
 # Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
   files:
   - README.MD
-  - appveyor.yml
+
   
 #---------------------------------#
 #    environment configuration    #
