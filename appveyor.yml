@@ -12,9 +12,8 @@ branches:
 
 # Skipping commits with particular message or from specific user
 skip_commits:
-  message: *skip_deployment*
+  message: /*skip_deployment*/
 # Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
-skip_commits:
   files:
   - README.MD
   - appveyor.yml
@@ -43,8 +42,9 @@ platform: Any CPU
 # build Configuration, i.e. Debug, Release, etc.
 configuration: Release
 
+build:
 # MSBuild verbosity level
-verbosity: normal
+  verbosity: normal
 
 #to disable automatic tests 
 test: off
@@ -62,7 +62,7 @@ artifacts:
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
-
+deploy:
     # Deploy to GitHub Releases
   - provider: GitHub
     artifact: CopyProductCode.Setup.msi           # upload all NuGet packages to release assets
