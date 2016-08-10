@@ -1,0 +1,76 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# Skipping commits with particular message or from specific user
+skip_commits:
+  message: *skip_deployment*
+# Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
+skip_commits:
+  files:
+  - README.MD
+  - appveyor.yml
+  
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+# enable patching of AssemblyInfo.* files
+#assembly_info:
+#  patch: true
+#  file: AssemblyInfo.*
+#  assembly_version: "2.2.{build}"
+#  assembly_file_version: "{version}"
+#  assembly_informational_version: "{version}"
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+# MSBuild verbosity level
+verbosity: normal
+
+#to disable automatic tests 
+test: off
+
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  # pushing a single file with environment variable in path and "Deployment name" specified
+  - path: CopyProductCode.Setup\bin\Release\CopyProductCode.Setup.msi
+    name: CopyProductCode.Setup.msi
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+    # Deploy to GitHub Releases
+  - provider: GitHub
+    artifact: CopyProductCode.Setup.msi           # upload all NuGet packages to release assets
+    draft: false
+    prerelease: false
+    on:
+      branch: master                # release from master branch only
+      appveyor_repo_tag: true       # deploy on tag push only
+
+# to disable deployment
+#deploy: off
