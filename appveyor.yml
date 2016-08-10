@@ -12,7 +12,7 @@ branches:
 
 # Skipping commits with particular message or from specific user
 skip_commits:
-  message: /*skip_deployment*/
+  message: skip_deployment
 # Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
   files:
   - README.MD
