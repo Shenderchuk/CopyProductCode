@@ -40,7 +40,14 @@
         <RegistryValue  Root="HKLM" Key="Software\classes\MSI.Package\shell\zCopy_ProductCode_to_Clipboard\command" Value='"[#fil_CopyProductCode.exe]" "%1"' Type="string"/>
         <RegistryValue  Root="HKLM" Key="SOFTWARE\Classes\.msi\shell\Copy PackageCode to Clipboard\command" Value='"[#fil_CopyProductCode.exe]" "%1"' Type="string"/>
       </Component>
-		</ComponentGroup>
+      <Component Id="cmp_Microsoft.Deployment.WindowsInstaller.dll">
+        <File Id="fil_Microsoft.Deployment.WindowsInstaller.dll" Source="$(var.CopyProductCode.TargetDir)\Microsoft.Deployment.WindowsInstaller.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="cmp_Microsoft.Deployment.WindowsInstaller.Linq.dll">
+        <File Id="fil_Microsoft.Deployment.WindowsInstaller.Linq.dll" Source="$(var.CopyProductCode.TargetDir)\Microsoft.Deployment.WindowsInstaller.Linq.dll" KeyPath="yes"/>
+      </Component>
+      
+    </ComponentGroup>
   
   </Product>
 </Wix>
