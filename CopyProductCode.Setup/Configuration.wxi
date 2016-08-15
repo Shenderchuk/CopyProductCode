@@ -2,7 +2,7 @@
 <Include>
   <?define ProductName = "CopyProductCode"?>
   <?define ProductManufacter = "Igor Shenderchuk"?>
-  <?define ProductVersion = "1.0.0" ?>
+  <?define ProductVersion = "!(bind.FileVersion.fil_CopyProductCode.exe)" ?>
   <?define ProductCode="*" ?>
   <?define ProductUpgradeCode="c4c39839-d4db-4def-9d2b-56340d37b8d2" ?>
 </Include>
