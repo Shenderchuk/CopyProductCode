@@ -3,7 +3,7 @@
 #---------------------------------#
 
 # version format
-version: 1.0.{build}
+version: 2.0.{build}
 # branches to build
 branches:
   # whitelist
@@ -41,6 +41,13 @@ image: Visual Studio 2015
 platform: Any CPU
 # build Configuration, i.e. Debug, Release, etc.
 configuration: Release
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: 2.0.{build}
+  assembly_file_version: 2.0.{build}
+  assembly_informational_version: 2.0.{build}
 
 build:
 # MSBuild verbosity level
