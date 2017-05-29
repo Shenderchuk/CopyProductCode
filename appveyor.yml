@@ -5,8 +5,8 @@
   init:
     # Set "build version number" to "short-commit-hash" or when tagged to "tag name" (Travis style)
     - ps: >-
-        $env:APPVEYOR_BUILD_NUMBER
-        $env:APPVEYOR_VERSION_NUMBER
+        $env:APPVEYOR_BUILD_NUMBER`
+        $env:APPVEYOR_VERSION_NUMBER`
         if ($env:APPVEYOR_REPO_TAG -eq "true")
         {
           Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
@@ -14,11 +14,11 @@
         else
         {
           Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
-        }
-        $env:APPVEYOR_REPO_TAG_NAME
-        "2.0.$(Get-Date -Format "yy")"
-        $env:APPVEYOR_BUILD_NUMBER
-        $env:APPVEYOR_VERSION_NUMBER
+        }`
+        $env:APPVEYOR_REPO_TAG_NAME`
+        "2.0.$(Get-Date -Format "yy")"`
+        $env:APPVEYOR_BUILD_NUMBER`
+        $env:APPVEYOR_VERSION_NUMBER`
 
   # version format
   version: "{version}"
