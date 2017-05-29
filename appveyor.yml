@@ -11,7 +11,7 @@
         }
         else
         {
-          Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
+          Update-AppveyorBuild -Version "0.$(Get-Date -Format "yy").$(Get-Date -Format "MM").$($env:appveyor_build_version)"
         }
         
     - ps: Write-Output $env:APPVEYOR_BUILD_NUMBER
@@ -19,7 +19,7 @@
     - ps: Write-Output $env:APPVEYOR_VERSION_NUMBER
 
   # version format
-  version: "{build}"
+  # version: "{build}"
   # branches to build
   branches:
     # whitelist
@@ -47,7 +47,7 @@
   #assembly_info:
   #  patch: true
   #  file: AssemblyInfo.*
-  #  assembly_version: "2.2."{build}""
+  #  assembly_version: "2.2."{version}""
   #  assembly_file_version: "{version}"
   #  assembly_informational_version: "{version}"
 
@@ -63,9 +63,9 @@
   assembly_info:
     patch: true
     file: '**\AssemblyInfo.*'
-    assembly_version: "{build}"
-    assembly_file_version: "{build}"
-    assembly_informational_version: "{build}"
+    assembly_version: "{version}"
+    assembly_file_version: "{version}"
+    assembly_informational_version: "{version}"
 
   build:
   # MSBuild verbosity level
@@ -82,7 +82,7 @@
   artifacts:
     # pushing a single file with environment variable in path and "Deployment name" specified
     - path: CopyProductCode.Setup\bin\Release\CopyProductCode.Setup.msi
-      name: CopyProductCode.Setup_v"{build}".msi
+      name: CopyProductCode.Setup_v"{version}".msi
 
   #---------------------------------#
   #     deployment configuration    #
@@ -90,7 +90,7 @@
   deploy:
       # Deploy to GitHub Releases
     - provider: GitHub
-      artifact: CopyProductCode.Setup_v"{build}".msi           # upload all NuGet packages to release assets
+      artifact: CopyProductCode.Setup_v"{version}".msi           # upload all NuGet packages to release assets
       draft: false
       prerelease: false
       on:
