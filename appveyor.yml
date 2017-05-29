@@ -14,9 +14,9 @@
           Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
         }
         
-    -ps: Write-Output $env:APPVEYOR_BUILD_NUMBER
-        
-    -ps: Write-Output $env:APPVEYOR_VERSION_NUMBER
+    - ps: Write-Output $env:APPVEYOR_BUILD_NUMBER
+         
+    - ps: Write-Output $env:APPVEYOR_VERSION_NUMBER
 
   # version format
   version: "{build}"
