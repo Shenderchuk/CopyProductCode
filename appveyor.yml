@@ -1,85 +1,97 @@
-#---------------------------------#
-#      general configuration      #
-#---------------------------------#
+  #---------------------------------#
+  #      general configuration      #
+  #---------------------------------#
 
-# version format
-version: {APPVEYOR_REPO_TAG_NAME}
-# branches to build
-branches:
-  # whitelist
-  only:
-    - master
+  init:
+    # Set "build version number" to "short-commit-hash" or when tagged to "tag name" (Travis style)
+    - ps: >-
+        if ($env:APPVEYOR_REPO_TAG -eq "true")
+        {
+          Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
+        }
+        else
+        {
+          Update-AppveyorBuild -Version "dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
+        }
 
-# Skipping commits with particular message or from specific user
-skip_commits:
-  message: skip_deployment
-# Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
-  files:
-  - README.MD
-  
-# Start builds on tags only (GitHub and BitBucket)
-skip_non_tags: true
+  # version format
+  version: "{build}"
+  # branches to build
+  branches:
+    # whitelist
+    only:
+      - master
 
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
+  # Skipping commits with particular message or from specific user
+  skip_commits:
+    message: skip_deployment
+  # Skipping commits affecting specific files (GitHub only). More details here: https://www.appveyor.com/docs/appveyor-yml
+    files:
+    - README.MD
 
-# Build worker image (VM template)
-image: Visual Studio 2015
+  # Start builds on tags only (GitHub and BitBucket)
+  skip_non_tags: true
 
-# enable patching of AssemblyInfo.* files
-#assembly_info:
-#  patch: true
-#  file: AssemblyInfo.*
-#  assembly_version: "2.2.{build}"
-#  assembly_file_version: "{version}"
-#  assembly_informational_version: "{version}"
+  #---------------------------------#
+  #    environment configuration    #
+  #---------------------------------#
 
-#---------------------------------#
-#       build configuration       #
-#---------------------------------#
+  # Build worker image (VM template)
+  image: Visual Studio 2015
 
-# build platform, i.e. x86, x64, Any CPU. This setting is optional.
-platform: Any CPU
-# build Configuration, i.e. Debug, Release, etc.
-configuration: Release
+  # enable patching of AssemblyInfo.* files
+  #assembly_info:
+  #  patch: true
+  #  file: AssemblyInfo.*
+  #  assembly_version: "2.2."{build}""
+  #  assembly_file_version: "{version}"
+  #  assembly_informational_version: "{version}"
 
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: {APPVEYOR_REPO_TAG_NAME}
-  assembly_file_version: {APPVEYOR_REPO_TAG_NAME}
-  assembly_informational_version: {APPVEYOR_REPO_TAG_NAME}
+  #---------------------------------#
+  #       build configuration       #
+  #---------------------------------#
 
-build:
-# MSBuild verbosity level
-  verbosity: normal
+  # build platform, i.e. x86, x64, Any CPU. This setting is optional.
+  platform: Any CPU
+  # build Configuration, i.e. Debug, Release, etc.
+  configuration: Release
 
-#to disable automatic tests 
-test: off
+  assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: "{build}"
+    assembly_file_version: "{build}"
+    assembly_informational_version: "{build}"
+
+  build:
+  # MSBuild verbosity level
+    verbosity: normal
+
+  #to disable automatic tests 
+  test: off
 
 
-#---------------------------------#
-#      artifacts configuration    #
-#---------------------------------#
+  #---------------------------------#
+  #      artifacts configuration    #
+  #---------------------------------#
 
-artifacts:
-  # pushing a single file with environment variable in path and "Deployment name" specified
-  - path: CopyProductCode.Setup\bin\Release\CopyProductCode.Setup.msi
-    name: CopyProductCode.Setup_v{APPVEYOR_REPO_TAG_NAME}.msi
+  artifacts:
+    # pushing a single file with environment variable in path and "Deployment name" specified
+    - path: CopyProductCode.Setup\bin\Release\CopyProductCode.Setup.msi
+      name: CopyProductCode.Setup_v"{build}".msi
 
-#---------------------------------#
-#     deployment configuration    #
-#---------------------------------#
-deploy:
-    # Deploy to GitHub Releases
-  - provider: GitHub
-    artifact: CopyProductCode.Setup_v{APPVEYOR_REPO_TAG_NAME}.msi           # upload all NuGet packages to release assets
-    draft: false
-    prerelease: false
-    on:
-      branch: master                # release from master branch only
-      appveyor_repo_tag: true       # deploy on tag push only
+  #---------------------------------#
+  #     deployment configuration    #
+  #---------------------------------#
+  deploy:
+      # Deploy to GitHub Releases
+    - provider: GitHub
+      artifact: CopyProductCode.Setup_v"{build}".msi           # upload all NuGet packages to release assets
+      draft: false
+      prerelease: false
+      on:
+        branch: master                # release from master branch only
+        appveyor_repo_tag: true       # deploy on tag push only
 
-# to disable deployment
-#deploy: off
+  # to disable deployment
+  #deploy: off
