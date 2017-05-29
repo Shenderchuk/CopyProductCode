@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Deployment.WindowsInstaller.Linq;
 
-
-
 namespace CopyProductCode
 {
     class Program
@@ -85,7 +83,7 @@ namespace CopyProductCode
             uRetCode = MsiCloseHandle(hRecord);
             return szValueBuf.ToString();
         }
-     
+             
         public static string GetVersionInfoWIX (string fileName)
         {
             string szProductCode;
@@ -97,7 +95,7 @@ namespace CopyProductCode
             return szProductCode;
         }
 
-    [STAThreadAttribute]
+        [STAThreadAttribute]
         static void Main(string[] args)
         {
             string strGUID;
@@ -114,7 +112,7 @@ namespace CopyProductCode
             //Check if MSI file exists
             if (System.IO.File.Exists (strFileName)  == true)
             {
-                strGUID = GetVersionInfoWIX(strFileName);
+                strGUID = GetVersionInfo(strFileName);
 
                 if (string.IsNullOrEmpty(strGUID))
                 {
@@ -122,9 +120,7 @@ namespace CopyProductCode
                 }
                 else
                 {
-                    //System.Windows.Forms.Clipboard.SetText(strGUID,System.Windows.Forms.TextDataFormat.UnicodeText);
                     System.Windows.Clipboard.SetText(strGUID.Trim());
-                    
                 }
             }
             else
@@ -132,10 +128,6 @@ namespace CopyProductCode
                 System.Windows.Clipboard.SetText("The specified path doesn't exist.");
                 System.Environment.Exit(1);
             }
-
-
-            
-
         }   
     }
 }
