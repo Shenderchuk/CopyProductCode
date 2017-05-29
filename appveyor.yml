@@ -3,7 +3,7 @@
 #---------------------------------#
 
 # version format
-version: 2.0.{build}
+version: 2.0.17.{build}
 # branches to build
 branches:
   # whitelist
@@ -45,9 +45,9 @@ configuration: Release
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: 2.0.{build}
-  assembly_file_version: 2.0.{build}
-  assembly_informational_version: 2.0.{build}
+  assembly_version: 2.0.17.{build}
+  assembly_file_version: 2.0.17.{build}
+  assembly_informational_version: 2.0.17.{build}
 
 build:
 # MSBuild verbosity level
@@ -64,7 +64,7 @@ test: off
 artifacts:
   # pushing a single file with environment variable in path and "Deployment name" specified
   - path: CopyProductCode.Setup\bin\Release\CopyProductCode.Setup.msi
-    name: CopyProductCode.Setup.msi
+    name: CopyProductCode.Setup_v2.0.17.{build}.msi
 
 #---------------------------------#
 #     deployment configuration    #
@@ -72,7 +72,7 @@ artifacts:
 deploy:
     # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: CopyProductCode.Setup.msi           # upload all NuGet packages to release assets
+    artifact: CopyProductCode.Setup_v2.0.17.{build}.msi           # upload all NuGet packages to release assets
     draft: false
     prerelease: false
     on:
